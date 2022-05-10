@@ -2,7 +2,6 @@ import React from "react";
 
 const InfoCardA = ({img, title, bgClass}) => {
   return (
-    <div>
       <div class={`card text-white lg:card-side ${bgClass} shadow-xl`}>
         <figure className='pl-5'>
           <img
@@ -16,7 +15,6 @@ const InfoCardA = ({img, title, bgClass}) => {
           <p>The time during which a business or organization is open for customers or visitors The store's opening hours</p>
         </div>
       </div>
-    </div>
   );
 };
 
