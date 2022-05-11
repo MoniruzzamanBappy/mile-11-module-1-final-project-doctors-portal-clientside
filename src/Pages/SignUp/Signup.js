@@ -1,24 +1,35 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Signup = () => {
   const navigate = useNavigate();
-  const handleSubmitLogin = (e) => {
+  const handleSubmitSignup = (e) => {
     e.preventDefault();
   };
-  const handleNewAccount = () => {
-    navigate("/signup");
+  const handleHaveAccount = () => {
+    navigate("/login");
   };
   return (
-    <div className="card w-96 bg-base-100 shadow-xl p-8 mx-auto my-4">
+    <div className="card w-96 bg-base-100 shadow-xl p-4 mx-auto">
       <div className="text-center">
-        <h1 className="text-5xl mb-9 font-bold">Login</h1>
+        <h1 className="text-5xl mb-9 font-bold">Sign Up</h1>
       </div>
       <form
-        onSubmit={handleSubmitLogin}
+        onSubmit={handleSubmitSignup}
         className="grid grid-cols-1 pt-2.5 justify-items-center gap-3"
         action=""
       >
+        <div className="w-full max-w-md">
+          <label class="label">
+            <span class="label-text">Your Name</span>
+          </label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            className="input input-bordered w-full max-w-md"
+          />
+        </div>
         <div className="w-full max-w-md">
           <label class="label">
             <span class="label-text">Your Email</span>
@@ -41,23 +52,19 @@ const Login = () => {
             className="input w-full max-w-md input-bordered "
           />
         </div>
-        <div className="w-full max-w-md">
-          <p className="cursor-pointer">Forgot Password ?</p>
-        </div>
         <input
-          class="btn w-full max-w-md text-white btn-accent"
+          class="btn text-white w-full max-w-md btn-accent"
           type="submit"
-          value="Login"
+          value="Sign Up"
         />
       </form>
       <div className="grid grid-cols-1  justify-items-center">
         <p className="pt-2">
-          <span>New to Doctors Portal? </span>
           <span
-            onClick={handleNewAccount}
+            onClick={handleHaveAccount}
             className="text-secondary cursor-pointer"
           >
-            Create new account
+            Already have an account?
           </span>
         </p>
         <div class="divider w-full max-w-md">OR</div>
@@ -69,4 +76,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
