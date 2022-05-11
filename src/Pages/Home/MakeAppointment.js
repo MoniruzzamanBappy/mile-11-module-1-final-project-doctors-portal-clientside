@@ -8,11 +8,11 @@ const MakeAppointment = () => {
     style={{
         background: `url(${appointment})`
     }}
-    className="bg-accent justify-center items-center flex px-12">
+    className="justify-center items-center flex px-12">
       <div className="flex-1">
         <img className="mt-[-130px] hidden lg:block" src={doctor} alt="" />
       </div>
-      <div className="flex-1">
+      <div className="flex-1 ">
         <h1 className="text-primary text-xl font-bold">
           Appointment
         </h1>

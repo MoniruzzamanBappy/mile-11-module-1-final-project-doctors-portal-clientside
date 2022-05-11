@@ -7,12 +7,12 @@ const ContactForm = () => {
         background: `url(${appointment})`
     }}>
       <div className="mb-12">
-        <h1 className="text-primary text-center font-bold ">Contact Us</h1>
+        <h1 className="text-primary pt-11 text-center font-bold ">Contact Us</h1>
         <h1 className="text-white  text-center text-4xl">
           Stay connected with us
         </h1>
       </div>
-      <div className="grid grid-cols-1 justify-items-center gap-5">
+      <div className="grid grid-cols-1 pt-2.5 justify-items-center gap-5">
       <input
           type='text'
           placeholder='Email Address'
