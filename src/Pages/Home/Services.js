@@ -45,18 +45,18 @@ const Services = () => {
         ))}
       </div>
       <div>
-        <div class="hero min-h-screen">
-          <div class="hero-content flex-col lg:flex-row">
+        <div className="hero min-h-screen">
+          <div className="hero-content flex-col lg:flex-row">
             <img
               src={treatment}
-              class="max-w-sm rounded-lg shadow-2xl"
+              className="max-w-sm rounded-lg shadow-2xl"
               alt=""
             />
             <div>
-              <h1 class="text-5xl font-bold">
+              <h1 className="text-5xl font-bold">
                 Exceptional Dental Care, on Your Terms
               </h1>
-              <p class="py-6  text-justify">
+              <p className="py-6  text-justify">
                 It is a long established fact that a reader will be distracted
                 by the readable content of a page when looking at its layout.
                 The point of using Lorem Ipsumis that it has a more-or-less
@@ -64,7 +64,7 @@ const Services = () => {
                 here, content here', making it look like readable English. Many
                 desktop publishing packages and web page
               </p>
-              <button class="btn border-primary text-white bg-gradient-to-r from-secondary to-primary">
+              <button className="btn border-primary text-white bg-gradient-to-r from-secondary to-primary">
                 Get Started
               </button>
             </div>

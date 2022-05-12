@@ -1,8 +1,15 @@
 import { format } from "date-fns";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
+import Loading from "../Shared/Loading/Loading";
 
 const BookingModal = ({ treatment, date, setTreatment }) => {
   const { _id, name, slots } = treatment;
+  const [user, loading] = useAuthState(auth);
+  if(loading){
+    return <Loading/>
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     const slot = e.target.slot.value;
@@ -14,16 +21,16 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
   };
   return (
     <div>
-      <input type="checkbox" id="booking-modal" class="modal-toggle" />
-      <div class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
+      <input type="checkbox" id="booking-modal" className="modal-toggle" />
+      <div className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
           <label
-            for="booking-modal"
-            class="btn btn-sm btn-circle absolute right-2 top-2"
+            htmlFor="booking-modal"
+            className="btn btn-sm btn-circle absolute right-2 top-2"
           >
             ✕
           </label>
-          <h3 class="font-bold text-lg">{name}</h3>
+          <h3 className="font-bold text-lg">{name}</h3>
           <form
             onSubmit={handleSubmit}
             className="grid grid-cols-1 pt-2.5 justify-items-center gap-5"
@@ -40,13 +47,15 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
               name="slot"
               className="input input-bordered bg-accent text-white w-full max-w-md"
             >
-              {slots.map((item) => (
-                <option>{item}</option>
+              {slots.map((item ,index) => (
+                <option value={item} key={index}>{item}</option>
               ))}
             </select>
             <input
               type="text"
               name="name"
+              value={user?.displayName || ''}
+              readOnly
               placeholder="Full Name"
               className="input input-bordered w-full max-w-md"
             />
@@ -59,10 +68,12 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
             <input
               type="email"
               name="email"
+              readOnly
+              value={user?.email || ''}
               placeholder="Email"
               className="input input-bordered w-full max-w-md"
             />
-            <input class="btn btn-accent" type="submit" value="Submit" />
+            <input className="btn btn-accent" type="submit" value="Submit" />
           </form>
         </div>
       </div>

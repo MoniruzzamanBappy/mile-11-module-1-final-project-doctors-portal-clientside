@@ -1,16 +1,46 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import auth from "./../../firebase.init";
+import {
+  useSignInWithEmailAndPassword,
+  useSignInWithGoogle,
+} from "react-firebase-hooks/auth";
+import Loading from "../Shared/Loading/Loading";
 
 const Login = () => {
   const navigate = useNavigate();
-  const handleSubmitLogin = (e) => {
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
+  let loginError;
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+  const [signInWithGoogle, user1, loading1, error1] = useSignInWithGoogle(auth);
+  const handleSubmitLogin = async (e) => {
     e.preventDefault();
+    const email = e.target.email.value;
+    const pass = e.target.password.value;
+    await signInWithEmailAndPassword(email, pass);
   };
+  useEffect(() => {
+    if (user || user1) {
+      navigate(from, { replace: true });
+    }
+  }, [user, user1, from, navigate]);
+  if (error || error1) {
+    loginError = (
+      <p className="text-red-500">
+        <small>{error?.message || error1?.message}</small>
+      </p>
+    );
+  }
+  if (loading || loading1) {
+    return <Loading></Loading>;
+  }
   const handleNewAccount = () => {
     navigate("/signup");
   };
   return (
-    <div className="card w-96 bg-base-100 shadow-xl p-8 mx-auto my-4">
+    <div className="card h-screen w-screen bg-base-100 shadow-xl p-8 mx-auto my-4">
       <div className="text-center">
         <h1 className="text-5xl mb-9 font-bold">Login</h1>
       </div>
@@ -20,8 +50,8 @@ const Login = () => {
         action=""
       >
         <div className="w-full max-w-md">
-          <label class="label">
-            <span class="label-text">Your Email</span>
+          <label className="label">
+            <span className="label-text">Your Email</span>
           </label>
           <input
             type="email"
@@ -31,8 +61,8 @@ const Login = () => {
           />
         </div>
         <div className="w-full max-w-md">
-          <label class="label">
-            <span class="label-text">Your Password</span>
+          <label className="label">
+            <span className="label-text">Your Password</span>
           </label>
           <input
             type="password"
@@ -44,8 +74,9 @@ const Login = () => {
         <div className="w-full max-w-md">
           <p className="cursor-pointer">Forgot Password ?</p>
         </div>
+        {loginError}
         <input
-          class="btn w-full max-w-md text-white btn-accent"
+          className="btn w-full max-w-md text-white btn-accent"
           type="submit"
           value="Login"
         />
@@ -60,8 +91,11 @@ const Login = () => {
             Create new account
           </span>
         </p>
-        <div class="divider w-full max-w-md">OR</div>
-        <button class="btn w-full max-w-md text-white bg-accent">
+        <div className="divider w-full max-w-md">OR</div>
+        <button
+          onClick={() => signInWithGoogle()}
+          className="btn w-full max-w-md text-white bg-accent"
+        >
           CONTINUE WITH GOOGLE
         </button>
       </div>
