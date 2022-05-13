@@ -1,23 +1,48 @@
 import { format } from "date-fns";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 import Loading from "../Shared/Loading/Loading";
 
 const BookingModal = ({ treatment, date, setTreatment }) => {
   const { _id, name, slots } = treatment;
   const [user, loading] = useAuthState(auth);
-  if(loading){
-    return <Loading/>
+  if (loading) {
+    return <Loading />;
   }
   const handleSubmit = (e) => {
     e.preventDefault();
     const slot = e.target.slot.value;
-    const pName = e.target.name.value;
-    const email = e.target.email.value;
+    const formattedDate = format(date, "PP");
     const number = e.target.number.value;
-    console.log({slot, _id, date, name,pName, email , number});
-    setTreatment(null)
+    const booking = {
+      slot,
+      bookingId: _id,
+      date: formattedDate,
+      treatment: name,
+      patient: user.email,
+      name: user.displayName,
+      number
+    };
+    fetch('http://localhost:5000/bookings', {
+      method: 'POST',
+      headers:{
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(booking)
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.acknowledged){
+        toast("Appointment Booked")
+        setTreatment(null);
+      }
+      else{
+        toast("Appointment Already Booked")
+
+      }
+    })
   };
   return (
     <div>
@@ -47,33 +72,37 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
               name="slot"
               className="input input-bordered bg-accent text-white w-full max-w-md"
             >
-              {slots.map((item ,index) => (
-                <option value={item} key={index}>{item}</option>
+              {slots.map((item, index) => (
+                <option value={item} key={index}>
+                  {item}
+                </option>
               ))}
             </select>
             <input
               type="text"
               name="name"
-              value={user?.displayName || ''}
+              value={user?.displayName || ""}
               readOnly
               placeholder="Full Name"
-              className="input input-bordered w-full max-w-md"
-            />
-            <input
-              type="number"
-              name="number"
-              placeholder="Number"
               className="input input-bordered w-full max-w-md"
             />
             <input
               type="email"
               name="email"
               readOnly
-              value={user?.email || ''}
+              value={user?.email || ""}
               placeholder="Email"
               className="input input-bordered w-full max-w-md"
             />
-            <input className="btn btn-accent" type="submit" value="Submit" />
+            <input
+              type="number"
+              name="number"
+              required
+              placeholder="Phone Number"
+              className="input input-bordered w-full max-w-md"
+            />
+            
+            <input className="btn w-full max-w-md btn-accent" type="submit" value="Submit" />
           </form>
         </div>
       </div>
