@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import auth from "../../firebase.init";
 import Loading from "../Shared/Loading/Loading";
 
-const BookingModal = ({ treatment, date, setTreatment }) => {
+const BookingModal = ({ treatment,refetch, date, setTreatment }) => {
   const { _id, name, slots } = treatment;
   const [user, loading] = useAuthState(auth);
   if (loading) {
@@ -36,6 +36,7 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
     .then(data=>{
       if(data.acknowledged){
         toast("Appointment Booked")
+        refetch()
         setTreatment(null);
       }
       else{
