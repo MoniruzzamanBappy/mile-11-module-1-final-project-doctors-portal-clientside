@@ -14,34 +14,43 @@ const MyAppointment = () => {
   useEffect(() => {
     const url = `http://localhost:5000/bookings?patient=${user.email}`;
     if (user) {
-      fetch(url)
+      fetch(url , {
+        method: 'GET',
+        headers:{
+          'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
+
+      })
         .then((res) => res.json())
         .then((data) => setAppointments(data));
     }
   }, [user]);
-  console.log(appointments, "abc");
   return (
     <div>
-        <h2 className="text-3xl pb-5 text-bold text-secondary">My Appointment</h2>
+      <h2 className="text-3xl pb-5 text-bold text-secondary">My Appointment</h2>
       <div class="overflow-x-auto">
-  <table class="table w-full">
-    {/* <!-- head --> */}
-    <thead>
-      <tr>
-          <th></th>
-        <th>Name</th>
-        <th>Treatment</th>
-        <th>Date</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      {
-          appointments.map((item, index)=><TableAppointments key={item._id} index={index} item={item}></TableAppointments>)
-      }
-    </tbody>
-  </table>
-</div>
+        <table class="table w-full">
+          {/* <!-- head --> */}
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Treatment</th>
+              <th>Date</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments.map((item, index) => (
+              <TableAppointments
+                key={item._id}
+                index={index}
+                item={item}
+              ></TableAppointments>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

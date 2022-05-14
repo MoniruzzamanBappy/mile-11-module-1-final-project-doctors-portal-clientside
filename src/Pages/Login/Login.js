@@ -6,6 +6,7 @@ import {
   useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
 import Loading from "../Shared/Loading/Loading";
+import useToken from './../../hooks/useToken';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Login = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   const [signInWithGoogle, user1, loading1, error1] = useSignInWithGoogle(auth);
+  const [token] = useToken(user || user1)
   const handleSubmitLogin = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -22,10 +24,10 @@ const Login = () => {
     await signInWithEmailAndPassword(email, pass);
   };
   useEffect(() => {
-    if (user || user1) {
+    if (token) {
       navigate(from, { replace: true });
     }
-  }, [user, user1, from, navigate]);
+  }, [from, navigate, token]);
   if (error || error1) {
     loginError = (
       <p className="text-red-500">

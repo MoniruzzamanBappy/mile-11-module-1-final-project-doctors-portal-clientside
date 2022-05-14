@@ -7,6 +7,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import auth from "./../../firebase.init";
 import Loading from "./../Shared/Loading/Loading";
+import useToken from './../../hooks/useToken';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Signup = () => {
     useCreateUserWithEmailAndPassword(auth);
   const [updateProfile, updating, error1] = useUpdateProfile(auth);
   const [signInWithGoogle, user1, loading1, error2] = useSignInWithGoogle(auth);
+  const [token] = useToken(user || user1)
   const handleSubmitSignup = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -26,10 +28,10 @@ const Signup = () => {
     await createUserWithEmailAndPassword(email, pass);
   };
   useEffect(() => {
-    if (user || user1) {
+    if (token) {
       navigate(from, { replace: true });
     }
-  }, [user, user1, from, navigate]);
+  }, [from, navigate, token]);
   if (error || error1 || error2) {
     loginError = (
       <p className="text-red-500">
