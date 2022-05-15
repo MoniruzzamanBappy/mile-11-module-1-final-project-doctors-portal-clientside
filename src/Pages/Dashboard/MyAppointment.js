@@ -3,10 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 import Loading from "../Shared/Loading/Loading";
 import TableAppointments from "./TableAppoinments";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
 const MyAppointment = () => {
   const [appointments, setAppointments] = useState([]);
   const [user, loading] = useAuthState(auth);
+  const navigate = useNavigate();
   if (loading) {
     return <Loading />;
   }
@@ -14,22 +17,34 @@ const MyAppointment = () => {
   useEffect(() => {
     const url = `http://localhost:5000/bookings?patient=${user.email}`;
     if (user) {
-      fetch(url , {
-        method: 'GET',
-        headers:{
-          'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+      fetch(url, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-
       })
-        .then((res) => res.json())
-        .then((data) => setAppointments(data));
+        .then((res) => {
+          if (res.status === 401) {
+            signOut(auth);
+            localStorage.removeItem('accessToken')
+            navigate("/home");
+          } else if (res.status === 403) {
+            signOut(auth);
+            localStorage.removeItem('accessToken')
+            navigate("/login");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setAppointments(data);
+        });
     }
-  }, [user]);
+  }, [navigate, user]);
   return (
     <div>
       <h2 className="text-3xl pb-5 text-bold text-secondary">My Appointment</h2>
-      <div class="overflow-x-auto">
-        <table class="table w-full">
+      <div className="overflow-x-auto">
+        <table className="table w-full">
           {/* <!-- head --> */}
           <thead>
             <tr>
