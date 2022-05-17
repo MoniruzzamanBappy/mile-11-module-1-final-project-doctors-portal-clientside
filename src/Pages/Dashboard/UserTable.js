@@ -30,11 +30,11 @@ const UserTable = ({ item, index, refetch }) => {
       <th>{email}</th>
       <th>
         {role !== "admin" && (
-          <button onClick={makeAdmin} className="btn mx-1 btn-xs">
+          <button onClick={makeAdmin} className="btn btn-success hover:bg-sky-600 mx-1 btn-xs">
             Make Admin
           </button>
         )}
-        <button className="btn mx-1 btn-xs">Remove User</button>
+        <button className="btn btn-warning mx-1 btn-xs">Remove User</button>
       </th>
     </tr>
   );
