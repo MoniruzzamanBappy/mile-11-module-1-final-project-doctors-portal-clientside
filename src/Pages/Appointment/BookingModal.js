@@ -6,7 +6,7 @@ import auth from "../../firebase.init";
 import Loading from "../Shared/Loading/Loading";
 
 const BookingModal = ({ treatment,refetch, date, setTreatment }) => {
-  const { _id, name, slots } = treatment;
+  const { _id, name, slots, price } = treatment;
   const [user, loading] = useAuthState(auth);
   if (loading) {
     return <Loading />;
@@ -21,6 +21,7 @@ const BookingModal = ({ treatment,refetch, date, setTreatment }) => {
       bookingId: _id,
       date: formattedDate,
       treatment: name,
+      price,
       patient: user.email,
       name: user.displayName,
       number
@@ -79,6 +80,14 @@ const BookingModal = ({ treatment,refetch, date, setTreatment }) => {
                 </option>
               ))}
             </select>
+            <input
+              type="number"
+              name="price"
+              value={price}
+              readOnly
+              placeholder="Price"
+              className="input input-bordered w-full max-w-md"
+            />
             <input
               type="text"
               name="name"
